@@ -7,10 +7,22 @@ export class ProductManager {
         this.path = path
     }
 
+    static incrementID(incrementar) {
+        if (incrementar) {
+            incrementar++
+        } else {
+            incrementar = 1
+        }
+        return incrementar
+    }
+
     async addProduct(producto) {
 
         const contenido1 = await fs.readFile(this.path, 'utf-8')
         const auxConsulta3 = JSON.parse(contenido1)
+        let lastElement = auxConsulta3[auxConsulta3.length - 1];
+       // console.log(lastElement)        
+        producto.id = ProductManager.incrementID(lastElement.id)
         auxConsulta3.push(producto)
         await fs.writeFile(this.path, JSON.stringify(auxConsulta3))
         return "Producto creado"
@@ -80,81 +92,10 @@ export class ProductManager {
 
     }
 
+
+
 }
 
 
-export class Product {
-    constructor(title = "", description = "", price = 0, thumbnail = "", code = "", stock = 0) {
-        this.id = Product.incrementID()
-        this.title = title
-        this.description = description
-        this.price = price
-        this.thumbnail = thumbnail
-        this.code = code
-        this.stock = stock
-    }
 
-
-    static incrementID() {
-        if (this.idIncrement) {
-            this.idIncrement++
-        } else {
-            this.idIncrement = 1
-        }
-        return this.idIncrement
-    }
-}
-
-//const newProduct1 = new Product("Laptop", "Computadora portatil", 20000, "RutaImg1", "C-P01", 25)
-//const newProduct2 = new Product("Televisión", "Televisión 20 p", 25000, "RutaImg2", "C-P03", 50)
-//const newProduct3 = new Product("Computadora", "Computadora de escritorio", 15000, "RutaImg3", "C-P03", 30)
-//const newProduct4 = new Product("Celular", "Teléfono celular", 10000, "RutaImg4", "C-P02", 65)
-//const newProduct5 = new Product()
-
-//const productManager = new ProductManager('./archivo.txt')
-
-//El archivo tiene inicialmente un arreglo vacío
-
-
-//Agrega productos al archivo
-
-
-/*console.log(await productManager.addProduct(newProduct1))
-
-console.log(await productManager.addProduct(newProduct2))
-
-console.log(await productManager.addProduct(newProduct3))
-
-console.log(await productManager.addProduct(newProduct4))*/
-
-
-
-
-
-//Lee el archivo y muestra los productos
-
-//console.log(await productManager.getProducts())
-
-
-
-
-//Muestra el producto del que pasamos el ID a consultar
-
-//console.log(await productManager.getProductById(1))
-
-
-
-
-//Actualiza producto del que pasamos el ID con la información del objeto que pasamos como parámetro
-
-/*let obModif = {title: "Tablet", description: 'Tableta portatil', price: 12000, thumbnail: "RutaImg1_1", code: 'C-H01', stock: 20 }
-
-console.log(await productManager.updateProduct(1, obModif))*/
-
-
-
-
-//Borra el producto que tiene el ID que pasamos
-
-//console.log(await productManager.deleteProduct(2))
 
